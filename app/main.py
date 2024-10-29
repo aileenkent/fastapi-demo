@@ -1,8 +1,9 @@
 #!/usr/bin/env python3
 
-from fastapi import FastAPI
+from fastapi import Request, FastAPI
 from typing import Optional
 from pydantic import BaseModel
+import pandas as pd
 import json
 import os
 
@@ -32,3 +33,19 @@ def square(g: int):
 @app.get("/difference/{h}/{i}")
 def subtract(h: int, i: int):
     return{"difference": h - i}
+
+@app.get("/customer/{idx}")
+def customer(idx: int):
+    #read data into a df
+    df = pd.read_csv("customers.csv")
+    #filter the data based on the index
+    customer = df.iloc[idx]
+    return customer.to_dict()
+
+@app.post("/get_body")
+async def get_body(request: Request):
+    response = await request.json()
+    first_name = response["fname"]
+    last_name = response["lname"]
+    favorite_number = response["favnu"]
+    return {"first_name": first_name, "last_name": last_name, "favorite_number": favorite_number}

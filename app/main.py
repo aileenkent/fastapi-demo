@@ -3,11 +3,18 @@
 from fastapi import Request, FastAPI
 from typing import Optional
 from pydantic import BaseModel
-import pandas as pd
+#import pandas as pd
 import json
 import os
 
 app = FastAPI()
+from fastapi.middleware.cors import CORSMiddleware
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
 
 @app.get("/")  # zone apex
 def zone_apex():
@@ -49,3 +56,26 @@ async def get_body(request: Request):
     last_name = response["lname"]
     favorite_number = response["favnu"]
     return {"first_name": first_name, "last_name": last_name, "favorite_number": favorite_number}
+
+@app.get('/genres')
+def get_genres():
+    db = mysql.connector.connect(user=DBUSER, host=DBHOST, password=DBPASS, database=DB)
+    cur=db.cursor()
+    query = "SELECT * FROM genres ORDER BY genreid;"
+    try:    
+        cur.execute(query)
+        headers=[x[0] for x in cur.description]
+        results = cur.fetchall()
+        json_data=[]
+        for result in results:
+            json_data.append(dict(zip(headers,result)))
+        cur.close()
+        db.close()
+        return(json_data)
+    except Error as e:
+        cur.close()
+        db.close()
+        return {"Error": "MySQL Error: " + str(e)}
+
+#@app.get('/songs')
+

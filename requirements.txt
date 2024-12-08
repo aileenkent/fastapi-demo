@@ -1,3 +1,5 @@
+import mysql.connector
+from mysql.connector import Error
 uvicorn
 fastapi[standard]
 typing
@@ -5,3 +7,11 @@ pydantic
 # pymongo
 # dnspython
 # mysqlclient
+mysql-connector-python
+DBHOST = "ds2022.cqee4iwdcaph.us-east-1.rds.amazonaws.com"
+DBUSER = "ds2022"
+DBPASS = os.getenv('DBPASS')
+DB = "sbx3sw"
+db = mysql.connector.connect(user=DBUSER, host=DBHOST, password=DBPASS, database=DB)
+cur=db.cursor()
+

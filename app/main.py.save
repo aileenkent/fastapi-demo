@@ -78,26 +78,4 @@ def get_genres():
         return {"Error": "MySQL Error: " + str(e)}
 
 @app.get('/songs')
-def get_songs():
-    db = mysql.connector.connect(user=DBUSER, host=DBHOST, password=DBPASS, database=DB)
-    cur = db.cursor()
-    query = """SELECT s.title, s.album, s.artist, s.year, s.song_file AS mp3_file, s.image AS image_file, g.genre AS genre
-             FROM songs s
-             JOIN genres g ON s.genre = g.genreid
-             ORDER BY s.title;"""
-    try:
-        cur.execute(query)
-        headers = [x[0] for x in cur.description]
-        results = cur.fetchall
-        json_data=[]
-        for result in results:
-            json_data.append(dict(zip(headers,result)))
-        cur.close()
-        db.close()
-        return(json_data)
-    except Error as e:
-        cur.close()
-        db.close()
-        return {"Error": "MySQL Error: " + str(e)}
-
 

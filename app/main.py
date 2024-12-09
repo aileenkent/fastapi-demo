@@ -3,9 +3,10 @@
 from fastapi import Request, FastAPI
 from typing import Optional
 from pydantic import BaseModel
-#import pandas as pd
 import json
 import os
+import mysql.connector
+from mysql.connector import Error
 
 app = FastAPI()
 from fastapi.middleware.cors import CORSMiddleware

@@ -43,13 +43,13 @@ def square(g: int):
 def subtract(h: int, i: int):
     return{"difference": h - i}
 
-@app.get("/customer/{idx}")
-def customer(idx: int):
+#@app.get("/customer/{idx}")
+#def customer(idx: int):
     #read data into a df
-    df = pd.read_csv("customers.csv")
+    #df = pd.read_csv("customers.csv")
     #filter the data based on the index
-    customer = df.iloc[idx]
-    return customer.to_dict()
+    #customer = df.iloc[idx]
+    #return customer.to_dict()
 
 @app.post("/get_body")
 async def get_body(request: Request):
